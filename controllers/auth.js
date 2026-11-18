@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const sendWelcomeEmail = require("../utils/sendWelcomeEmail");
 
 const sendTokenResponse = (user, statusCode, res) => {
   const token = user.getSignedJwtToken();
@@ -18,6 +19,8 @@ exports.register = async (req, res, next) => {
   try {
     const { name, email, tel, password, role } = req.body;
     const user = await User.create({ name, email, tel, password, role });
+    // Awaited so the serverless function does not stop before the mail is sent; failures are swallowed.
+    await sendWelcomeEmail(user);
     sendTokenResponse(user, 201, res);
   } catch (error) {
     next(error);
