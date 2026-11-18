@@ -12,6 +12,11 @@ const EquipmentSchema = new mongoose.Schema(
       validate: { validator: Number.isInteger, message: "Quantity must be an integer" },
     },
     rentalRate: { type: Number, required: [true, "Please add a rental rate"], min: [0, "Rental rate cannot be negative"] },
+    image: {
+      type: String,
+      default: "",
+      maxlength: [1500000, "Image is too large; use a picture under about 1 MB"],
+    },
     isActive: { type: Boolean, default: true },
   },
   { timestamps: true }
